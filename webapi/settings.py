@@ -30,7 +30,10 @@ SECRET_KEY = "django-insecure-x33!hh=njz04p=vm)q=yyh5zf*289$v72vsy(=f0joezq3kq_a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	'localhost',
+	'.elasticbeanstalk.com',
+]
 
 
 # Application definition
@@ -73,7 +76,7 @@ ROOT_URLCONF = "webapi.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'webapi/templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -84,6 +87,10 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'webapi/static'),
 ]
 
 WSGI_APPLICATION = "webapi.wsgi.application"
@@ -102,6 +109,35 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
+
+# if 'RDS_DB_NAME' in os.environ:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': os.environ['RDS_DB_NAME'],
+#             'USER': os.environ['RDS_USERNAME'],
+#             'PASSWORD': os.environ['RDS_PASSWORD'],
+#             'HOST': os.environ['RDS_HOSTNAME'],
+#             'PORT': os.environ['RDS_PORT'],
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': '[LOCAL DATABASE NAME]',
+#             'USER': '[LOCAL DATABASE USER]',
+#             'PASSWORD': '',
+#             'HOST': 'localhost',
+#             'PORT': '5432',
+#         }
+#     }
+
+
+# AWS EB Settings
+AWS_QUERYSTRING_AUTH = False
+AWS_ACCESS_KEY_ID = os.getenv("EB_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("EB_AWS_ACCESS_KEY_SECRET")
 
 
 # Password validation
@@ -126,21 +162,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
+# Internationalization
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'US/Mountain'
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# AWS_STORAGE_BUCKET_NAME = '[YOUR S3 BUCKET NAME]'
+# MEDIA_URL = 'http://%s.s3.amazonaws.com/uploads/' % AWS_STORAGE_BUCKET_NAME
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
