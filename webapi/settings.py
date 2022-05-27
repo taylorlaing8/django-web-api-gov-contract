@@ -12,10 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv
 import datetime
-
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,8 +28,8 @@ SECRET_KEY = "django-insecure-x33!hh=njz04p=vm)q=yyh5zf*289$v72vsy(=f0joezq3kq_a
 DEBUG = True
 
 ALLOWED_HOSTS = [
-	'localhost',
-	'.elasticbeanstalk.com',
+    "localhost",
+    ".elasticbeanstalk.com",
 ]
 
 
@@ -76,7 +73,7 @@ ROOT_URLCONF = "webapi.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'webapi/templates')],
+        "DIRS": [os.path.join(BASE_DIR, "webapi/templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -90,7 +87,7 @@ TEMPLATES = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'webapi/static'),
+    os.path.join(BASE_DIR, "webapi/static"),
 ]
 
 WSGI_APPLICATION = "webapi.wsgi.application"
@@ -99,45 +96,45 @@ WSGI_APPLICATION = "webapi.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USERNAME"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.environ["DB_NAME"],
+#         "USER": os.environ["DB_USERNAME"],
+#         "PASSWORD": os.environ["DB_PASSWORD"],
+#         "HOST": os.environ["DB_HOST"],
+#         "PORT": os.environ["DB_PORT"],
+#     }
+# }
 
-# if 'RDS_DB_NAME' in os.environ:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#             'NAME': os.environ['RDS_DB_NAME'],
-#             'USER': os.environ['RDS_USERNAME'],
-#             'PASSWORD': os.environ['RDS_PASSWORD'],
-#             'HOST': os.environ['RDS_HOSTNAME'],
-#             'PORT': os.environ['RDS_PORT'],
-#         }
-#     }
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#             'NAME': '[LOCAL DATABASE NAME]',
-#             'USER': '[LOCAL DATABASE USER]',
-#             'PASSWORD': '',
-#             'HOST': 'localhost',
-#             'PORT': '5432',
-#         }
-#     }
+if "RDS_DB_NAME" in os.environ:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ["RDS_DB_NAME"],
+            "USER": os.environ["RDS_USERNAME"],
+            "PASSWORD": os.environ["RDS_PASSWORD"],
+            "HOST": os.environ["RDS_HOSTNAME"],
+            "PORT": os.environ["RDS_PORT"],
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "webapi",
+            "USER": "laingadmin",
+            "PASSWORD": "yafomsbV3QMt8ofA5dsT",
+            "HOST": "web-rds.cesqjcjktfgv.us-east-2.rds.amazonaws.com",
+            "PORT": "5432",
+        }
+    }
 
 
 # AWS EB Settings
-AWS_QUERYSTRING_AUTH = False
-AWS_ACCESS_KEY_ID = os.getenv("EB_AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("EB_AWS_ACCESS_KEY_SECRET")
+# AWS_QUERYSTRING_AUTH = False
+# AWS_ACCESS_KEY_ID = os.environ["EB_AWS_ACCESS_KEY_ID"]
+# AWS_SECRET_ACCESS_KEY = os.environ["EB_AWS_ACCESS_KEY_SECRET"]
 
 
 # Password validation
@@ -163,8 +160,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 # Internationalization
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'US/Mountain'
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "US/Mountain"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -173,8 +170,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
+STATIC_URL = "/static/"
+STATIC_ROOT = "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
