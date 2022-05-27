@@ -1,11 +1,17 @@
 from django.urls import include, path
-from .views import UserCreate, UserList, UserDetail, UserUpdate, UserDelete
-
+from . import views
 
 urlpatterns = [
-    path('create/', UserCreate.as_view(), name='create-user'),
-    path('', UserList.as_view()),
-    path('<int:pk>/', UserDetail.as_view(), name='retrieve-user'),
-    path('update/<int:pk>/', UserUpdate.as_view(), name='update-user'),
-    path('delete/<int:pk>/', UserDelete.as_view(), name='delete-user')
+    path(
+        "user/",
+        include(
+            [
+                path("create/", views.UserCreate.as_view()),
+                path("", views.UserList.as_view()),
+                path("<int:pk>/", views.UserDetail.as_view()),
+                path("update/<int:pk>/", views.UserUpdate.as_view()),
+                path("delete/<int:pk>/", views.UserDelete.as_view()),
+            ]
+        ),
+    )
 ]
