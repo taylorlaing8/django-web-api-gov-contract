@@ -27,10 +27,14 @@ SECRET_KEY = "django-insecure-x33!hh=njz04p=vm)q=yyh5zf*289$v72vsy(=f0joezq3kq_a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "localhost",
-    ".elasticbeanstalk.com",
-]
+if "RDS_DB_NAME" in os.environ:
+	ALLOWED_HOSTS = [
+		"web-api-env.eba-tzk6t424.us-west-2.elasticbeanstalk.com",
+	]
+else: 
+	ALLOWED_HOSTS = [
+		"127.0.0.1",
+	]
 
 
 # Application definition
