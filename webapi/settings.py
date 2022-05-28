@@ -28,13 +28,13 @@ SECRET_KEY = "django-insecure-x33!hh=njz04p=vm)q=yyh5zf*289$v72vsy(=f0joezq3kq_a
 DEBUG = True
 
 if "RDS_DB_NAME" in os.environ:
-	ALLOWED_HOSTS = [
-		"web-api-env.eba-tzk6t424.us-west-2.elasticbeanstalk.com",
-	]
-else: 
-	ALLOWED_HOSTS = [
-		"127.0.0.1",
-	]
+    ALLOWED_HOSTS = [
+        "web-api-env.eba-tzk6t424.us-west-2.elasticbeanstalk.com",
+    ]
+else:
+    ALLOWED_HOSTS = [
+        "127.0.0.1",
+    ]
 
 
 # Application definition
@@ -129,7 +129,7 @@ else:
             "NAME": "webapi",
             "USER": "laingadmin",
             "PASSWORD": "yafomsbV3QMt8ofA5dsT",
-            "HOST": "web-rds.cesqjcjktfgv.us-east-2.rds.amazonaws.com",
+            "HOST": "laing-db.c3vi4tjpqaxx.us-west-2.rds.amazonaws.com",
             "PORT": "5432",
         }
     }
