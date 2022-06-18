@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework import generics
 from ..models import Contract
-from ..serializers import ContractSerializer
+from ..serializers import ContractSerializer, ContractListSerializer
 
 
 class ContractCreate(generics.CreateAPIView):
@@ -28,4 +28,4 @@ class ContractDelete(generics.RetrieveDestroyAPIView):
 
 class ContractList(generics.ListAPIView):
     queryset = Contract.objects.all()
-    serializer_class = ContractSerializer
+    serializer_class = ContractListSerializer

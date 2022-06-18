@@ -1,6 +1,6 @@
 from numpy import source
 from rest_framework import serializers
-from .models import Position, PointOfContact, Contract
+from .models import Position, PointOfContact, Contract, Task
 
 
 class PositionSerializer(serializers.ModelSerializer):
@@ -33,18 +33,9 @@ class ContractSerializer(serializers.ModelSerializer):
     ucid = serializers.CharField(max_length=55)     # Unique Contract ID
     status = serializers.CharField(max_length=2)
     value = serializers.FloatField()    # In millions of dollars (i.e. 455.53 = $455.53M)
-    ss_leads = PointOfContactSerializer(many=True, read_only=True, source="ss_lead_ids")
-    ss_lead_ids = serializers.PrimaryKeyRelatedField(many=True, write_only=True, queryset=PointOfContact.objects.all())
+    ss_leads = serializers.ListField(child = serializers.IntegerField(), write_only=True)
     need_date = serializers.DateTimeField()
     award_date = serializers.DateTimeField()
-    pco = PointOfContactSerializer(many=False, read_only=True)
-    pco_id = serializers.IntegerField(write_only=True)
-    buyer = PointOfContactSerializer(many=False, read_only=True)
-    buyer_id = serializers.IntegerField(write_only=True)
-    admin_pco = PointOfContactSerializer(many=False, read_only=True)
-    admin_pco_id = serializers.IntegerField(write_only=True)
-    admin_buyer = PointOfContactSerializer(many=False, read_only=True)
-    admin_buyer_id = serializers.IntegerField(write_only=True)
     cycle_code = serializers.CharField(max_length=15)
     pop_date = serializers.DateTimeField()
     g_o_p = serializers.IntegerField()
@@ -55,37 +46,95 @@ class ContractSerializer(serializers.ModelSerializer):
     g_fr_tr_p = serializers.IntegerField()
     g_fr_fr_p = serializers.IntegerField()
     g_fr_fv_p = serializers.IntegerField()
-    pocs = PointOfContactSerializer(many=True, read_only=True, source="poc_ids")
-    poc_ids = serializers.PrimaryKeyRelatedField(many=True, write_only=True, queryset=PointOfContact.objects.all())
+    pocs = serializers.ListField(child = serializers.IntegerField(), write_only=True)
+    tasks = serializers.SerializerMethodField()
 
     class Meta:
         model = Contract
         fields = ('__all__')
 
+    def to_representation(self, instance):
+        self.fields['pco'] =  PointOfContactSerializer(read_only=True)
+        self.fields['buyer'] =  PointOfContactSerializer(read_only=True)
+        self.fields['admin_pco'] =  PointOfContactSerializer(read_only=True)
+        self.fields['admin_buyer'] =  PointOfContactSerializer(read_only=True)
+
+        self.fields['ss_leads'] = PointOfContactSerializer(many=True, read_only=True)
+        self.fields['pocs'] = PointOfContactSerializer(many=True, read_only=True)
+
+        return super(ContractSerializer, self).to_representation(instance)
+    
+    def get_tasks(self, instance):
+        tasks = Task.objects.filter(contract_id=instance.id, task_id=None).order_by('order_id')
+        serializer = TaskSerializer(tasks, many=True)
+        return serializer.data
+
+class ContractListSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(max_length=255)
+    sub_title = serializers.CharField(max_length=255, allow_null=True)
+    slug = serializers.CharField(max_length=255)
+    type = serializers.CharField(max_length=55)
+    ucid = serializers.CharField(max_length=55)     # Unique Contract ID
+    status = serializers.CharField(max_length=2)
+    value = serializers.FloatField()    # In millions of dollars (i.e. 455.53 = $455.53M)
+    ss_leads = serializers.ListField(child = serializers.IntegerField(), write_only=True)
+    need_date = serializers.DateTimeField()
+    award_date = serializers.DateTimeField()
+    cycle_code = serializers.CharField(max_length=15)
+    pop_date = serializers.DateTimeField()
+    g_o_p = serializers.IntegerField()
+    g_t_p = serializers.IntegerField()
+    g_tr_p = serializers.IntegerField()
+    g_fr_o_p = serializers.IntegerField()
+    g_fr_t_p = serializers.IntegerField()
+    g_fr_tr_p = serializers.IntegerField()
+    g_fr_fr_p = serializers.IntegerField()
+    g_fr_fv_p = serializers.IntegerField()
+
+    class Meta:
+        model = Contract
+        fields = ('__all__')
+
+    def to_representation(self, instance):
+        self.fields['pco'] =  PointOfContactSerializer(read_only=True)
+        self.fields['buyer'] =  PointOfContactSerializer(read_only=True)
+        self.fields['admin_pco'] =  PointOfContactSerializer(read_only=True)
+        self.fields['admin_buyer'] =  PointOfContactSerializer(read_only=True)
+
+        self.fields['ss_leads'] = PointOfContactSerializer(many=True, read_only=True)
+        self.fields['pocs'] = PointOfContactSerializer(many=True, read_only=True)
+
+        return super(ContractListSerializer, self).to_representation(instance)
+    
 
 class TaskSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
-    sub_title = serializers.CharField(max_length=255)
+    sub_title = serializers.CharField(max_length=255, allow_null=True)
     slug = serializers.CharField(max_length=255)
     status = serializers.CharField(max_length=2)
-    task_id = serializers.IntegerField()  # FIX MEEEEEEE !!!! TASK FOREIGN KEY INTEGER
-    contract_id = (
-        serializers.IntegerField()
-    )  # FIX MEEEEEEE !!!! CONTRACT FOREIGN KEY INTEGER
+    task_id = serializers.PrimaryKeyRelatedField(queryset=Task.objects.all(), many=False, allow_null=True)
+    contract_id = serializers.PrimaryKeyRelatedField(queryset=Contract.objects.all(), many=False)
     order_id = serializers.IntegerField()
     gate = serializers.IntegerField()
-    sub_gate = serializers.IntegerField()
+    sub_gate = serializers.IntegerField(allow_null=True)
     palt_plan = serializers.FloatField()
-    bus_days = serializers.IntegerField()
+    bus_days = serializers.IntegerField(allow_null=True)
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
-    ssp_date = serializers.DateTimeField()
-    poc = serializers.IntegerField()  # FIX MEEEEEEE !!!! POC FOREIGN KEY INTEGER
-    comments = serializers.CharField(max_length=500)
-    tasks = (
-        serializers.IntegerField()
-    )  # TaskSerializer()                      # FIX MEEEEEEE !!!! MANY TASKS THAT RELATES TO ITSELF
-    # tasks = TaskSerializer(many=True)
+    ssp_date = serializers.DateTimeField(allow_null=True)
+    comments = serializers.CharField(max_length=500, allow_null=True)
+    tasks = serializers.SerializerMethodField()
 
-    # def create(self,validated_data):
-    #     return Task.objects.create(**validated_data)
+    class Meta:
+        model = Task
+        fields = ('__all__')
+
+    def to_representation(self, instance):
+        self.fields['poc'] =  PointOfContactSerializer(read_only=True)
+
+        return super(TaskSerializer, self).to_representation(instance)
+
+    def get_tasks(self, instance):
+        tasks = Task.objects.filter(task_id=instance.id).order_by('order_id')
+        serializer = TaskSerializer(tasks, many=True)
+        return serializer.data

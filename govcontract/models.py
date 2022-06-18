@@ -32,7 +32,7 @@ class Contract(models.Model):
     ucid        = models.CharField(max_length=55)   # Unique Contract ID
     status      = models.CharField(max_length=2, choices=Status.choices, default=Status.INCOMPLETE)
     value       = models.FloatField()               # In millions of dollars (i.e. 455.53 = $455.53M)
-    ss_lead_ids = models.ManyToManyField('PointOfContact', related_name="ss_lead_ids")
+    ss_leads    = models.ManyToManyField('PointOfContact', related_name="ss_leads")
     need_date   = models.DateTimeField(null=True)
     award_date  = models.DateTimeField(null=True)
     pco         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="pco")             # POC field
@@ -49,7 +49,7 @@ class Contract(models.Model):
     g_fr_tr_p   = models.IntegerField()
     g_fr_fr_p   = models.IntegerField()
     g_fr_fv_p   = models.IntegerField()
-    poc_ids     = models.ManyToManyField('PointOfContact', related_name="poc_ids")
+    pocs        = models.ManyToManyField('PointOfContact', related_name="pocs")
     created     = models.DateTimeField(auto_now_add=True)
 
 class Task(models.Model):
@@ -57,8 +57,8 @@ class Task(models.Model):
     sub_title   = models.CharField(max_length=255, null=True)
     slug        = models.CharField(max_length=255)
     status      = models.CharField(max_length=2, choices=Status.choices, default=Status.INCOMPLETE)
-    # task_id     = models.ForeignKey("Task", on_delete=models.CASCADE)
-    contract_id = models.ForeignKey("Contract", on_delete=models.CASCADE)
+    task_id     = models.ForeignKey("Task", on_delete=models.CASCADE, null=True)
+    contract_id = models.ForeignKey("Contract", on_delete=models.CASCADE, related_name="contract_id")
     order_id    = models.IntegerField()
     gate        = models.IntegerField()
     sub_gate    = models.IntegerField(null=True)
@@ -67,9 +67,8 @@ class Task(models.Model):
     start_date  = models.DateTimeField()
     end_date    = models.DateTimeField()
     ssp_date    = models.DateTimeField(null=True)
-    poc         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, null=True)
+    poc         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="poc", null=True)
     comments    = models.CharField(max_length=500, null=True)
-    tasks       = models.ManyToManyField('Task')
     created     = models.DateTimeField(auto_now_add=True)
 
     @property
