@@ -22,4 +22,5 @@ urlpatterns = [
     path("auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("admin/", admin.site.urls),
     path("v1/", include("api.urls")),
+    path("gov/", include("govcontract.urls")),
 ]

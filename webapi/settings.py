@@ -30,7 +30,7 @@ DEBUG = True
 if "RDS_DB_NAME" in os.environ:
     ALLOWED_HOSTS = [
         "web-api-env.eba-tzk6t424.us-west-2.elasticbeanstalk.com",
-		"web-api.taylorlaing.dev",
+        "web-api.taylorlaing.dev",
     ]
 else:
     ALLOWED_HOSTS = [
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "api",
+    "govcontract",
 ]
 
 MIDDLEWARE = [
