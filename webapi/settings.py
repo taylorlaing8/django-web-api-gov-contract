@@ -31,7 +31,6 @@ if "RDS_DB_NAME" in os.environ:
     ALLOWED_HOSTS = [
         "web-api-env.eba-tzk6t424.us-west-2.elasticbeanstalk.com",
         "web-api.taylorlaing.dev",
-        "govcontract.laing.dev",
     ]
 else:
     ALLOWED_HOSTS = [
@@ -66,7 +65,7 @@ MIDDLEWARE = [
 JWT_AUTH = {
     "JWT_ALLOW_REFRESH": True,
     "JWT_EXPIRATION_DELTA": datetime.timedelta(hours=1),
-    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(days=7),
+    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(minutes=0),
 }
 
 REST_FRAMEWORK = {
