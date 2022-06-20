@@ -27,5 +27,5 @@ class PositionDelete(generics.RetrieveDestroyAPIView):
 
 
 class PositionList(generics.ListAPIView):
-    queryset = Position.objects.all()
+    queryset = Position.objects.all().order_by('id')
     serializer_class = PositionSerializer

@@ -27,5 +27,5 @@ class TaskDelete(generics.RetrieveDestroyAPIView):
 
 
 class TaskList(generics.ListAPIView):
-    queryset = Task.objects.all()
+    queryset = Task.objects.all().order_by('order_id')
     serializer_class = TaskSerializer

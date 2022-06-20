@@ -9,11 +9,13 @@ class Status(models.TextChoices):
     COMPLETE = 'CP', _('Complete')
 
 class Position(models.Model):
+    id          = models.AutoField(primary_key=True)
     title       = models.CharField(max_length=255)
     department  = models.CharField(max_length=255)
     created     = models.DateTimeField(auto_now_add=True)
 
 class PointOfContact(models.Model):
+    id          = models.AutoField(primary_key=True)
     first_name  = models.CharField(max_length=55)
     last_name   = models.CharField(max_length=55)
     email       = models.EmailField()
@@ -25,6 +27,7 @@ class PointOfContact(models.Model):
         return "%s. %s %s" % (self.prefix, self.first_name, self.last_name)
 
 class Contract(models.Model):
+    id          = models.AutoField(primary_key=True)
     title       = models.CharField(max_length=255)
     sub_title   = models.CharField(max_length=255, null=True)
     slug        = models.CharField(max_length=255)
@@ -53,6 +56,7 @@ class Contract(models.Model):
     created     = models.DateTimeField(auto_now_add=True)
 
 class Task(models.Model):
+    id          = models.AutoField(primary_key=True)
     title       = models.CharField(max_length=255)
     sub_title   = models.CharField(max_length=255, null=True)
     slug        = models.CharField(max_length=255)

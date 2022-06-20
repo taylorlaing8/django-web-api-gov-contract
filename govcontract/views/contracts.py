@@ -27,5 +27,5 @@ class ContractDelete(generics.RetrieveDestroyAPIView):
 
 
 class ContractList(generics.ListAPIView):
-    queryset = Contract.objects.all()
+    queryset = Contract.objects.all().order_by('id')
     serializer_class = ContractListSerializer

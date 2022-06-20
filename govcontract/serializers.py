@@ -9,7 +9,7 @@ class PositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Position
-        fields = ('pk', 'title', 'department')
+        fields = ('__all__')
 
 
 class PointOfContactSerializer(serializers.ModelSerializer):
