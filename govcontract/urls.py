@@ -34,11 +34,14 @@ urlpatterns = [
                     "contracts/",
                     include(
                         [
-                            path("create/", ContractCreate.as_view()),
+                            # # path("create/", ContractDetail.as_view()),
+                            # path("", ContractListCreate.as_view()),
+                            # path("<int:pk>/", ContractDetail.as_view()),
+                            # path("<int:pk>/update/", ContractUpdate.as_view()),
+                            # path("<int:pk>/delete/", ContractDelete.as_view()),
+
                             path("", ContractList.as_view()),
                             path("<int:pk>/", ContractDetail.as_view()),
-                            path("<int:pk>/update/", ContractUpdate.as_view()),
-                            path("<int:pk>/delete/", ContractDelete.as_view()),
                         ]
                     ),
                 ),
