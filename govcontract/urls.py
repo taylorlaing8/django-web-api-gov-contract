@@ -7,6 +7,18 @@ urlpatterns = [
         include(
             [
                 path(
+                    "holidays/",
+                    include(
+                        [
+                            path("create/", HolidayCreate.as_view()),
+                            path("", HolidayList.as_view()),
+                            path("<int:pk>/", HolidayDetail.as_view()),
+                            path("<int:pk>/update/", HolidayUpdate.as_view()),
+                            path("<int:pk>/delete/", HolidayDelete.as_view()),
+                        ]
+                    ),
+                ),
+                path(
                     "positions/",
                     include(
                         [
