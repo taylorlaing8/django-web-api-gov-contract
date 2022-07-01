@@ -61,11 +61,13 @@ urlpatterns = [
                     "tasks/",
                     include(
                         [
-                            path("create/", TaskCreate.as_view()),
+                            # path("create/", TaskCreate.as_view()),
+                            # path("", TaskList.as_view()),
+                            # path("<int:pk>/", TaskDetail.as_view()),
+                            # path("<int:pk>/update/", TaskUpdate.as_view()),
+                            # path("<int:pk>/delete/", TaskDelete.as_view()),
                             path("", TaskList.as_view()),
                             path("<int:pk>/", TaskDetail.as_view()),
-                            path("<int:pk>/update/", TaskUpdate.as_view()),
-                            path("<int:pk>/delete/", TaskDelete.as_view()),
                         ]
                     ),
                 )

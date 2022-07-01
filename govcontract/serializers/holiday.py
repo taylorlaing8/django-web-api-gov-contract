@@ -5,8 +5,8 @@ from ..models import Holiday
 class HolidaySerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     details = serializers.CharField(max_length=255, allow_null=True)
-    date = serializers.DateTimeField()
-    observed = serializers.DateTimeField()
+    date = serializers.DateField()
+    observed = serializers.DateField()
 
     class Meta:
         model = Holiday

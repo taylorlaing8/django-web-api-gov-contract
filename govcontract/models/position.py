@@ -5,3 +5,6 @@ class Position(models.Model):
     title       = models.CharField(max_length=255)
     department  = models.CharField(max_length=255)
     created     = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        managed = True
