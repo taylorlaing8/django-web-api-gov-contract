@@ -122,6 +122,12 @@ class TaskDetail(APIView):
 
                 # ADD CALCULATIONS TO AGGREGATE PARENT TOTALS IN THIS IF BLOCK
                 if(p_task is not None):
+
+                    # Calculations
+                    tsk.start_date = get_start_date(prev_task.end_date, day_count)
+                    tsk.end_date = get_end_date(tsk.start_date, tsk.bus_days, day_count)
+                    tsk.palt_actual = get_palt_actual(tsk.start_date, tsk.end_date)
+
                     # If this is the first task within parent subtasks
                     if((tsk.order_id - 1) == p_task.order_id):
                         p_task.status = tsk.status
@@ -137,7 +143,7 @@ class TaskDetail(APIView):
                         prev_task = task
                         day_count += request.data['bus_days']
                         continue
-                    else:
+                    elif(tsk.order_id <= task.order_id):
                         if(tsk.status != p_task.status and p_task.status != Status.INPROGRESS):
                             p_task.status = tsk.status
                         p_task.palt_plan += tsk.palt_plan
