@@ -23,9 +23,6 @@ class Task(models.Model):
     created     = models.DateTimeField(auto_now_add=True)
     status_updated     = models.DateTimeField(null=True)
 
-    # @property
-    # def palt_actual(self):
-    #     return self.end_date - self.start_date
     def get_all_tasks(self):
         return Task.objects.filter(task_id=self.id).order_by('order_id')
 

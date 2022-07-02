@@ -3,11 +3,10 @@ from django.db.models import Sum
 from django.forms.models import model_to_dict
 
 from rest_framework import generics
-import logging
 
 from govcontract.services.taskServices import get_palt_actual, get_end_date, get_prev_task, get_start_date, save_parent
 from ..models import Task, Contract, Status
-from ..serializers import TaskSerializer, ContractSerializer, ContractListSerializer
+from ..serializers import TaskSerializer, TaskSingleSerializer, ContractSerializer, ContractListSerializer
 from rest_framework.permissions import IsAuthenticated
 
 from django.http import Http404
@@ -58,7 +57,7 @@ class TaskDetail(APIView):
 
     def get(self, request, pk, format=None):
         task = self.get_object(pk)
-        serializer = TaskSerializer(task)
+        serializer = TaskSingleSerializer(task)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
@@ -122,11 +121,11 @@ class TaskDetail(APIView):
 
                 # ADD CALCULATIONS TO AGGREGATE PARENT TOTALS IN THIS IF BLOCK
                 if(p_task is not None):
-
                     # Calculations
-                    tsk.start_date = get_start_date(prev_task.end_date, day_count)
-                    tsk.end_date = get_end_date(tsk.start_date, tsk.bus_days, day_count)
-                    tsk.palt_actual = get_palt_actual(tsk.start_date, tsk.end_date)
+                    if(tsk.id != task.id):
+                        tsk.start_date = get_start_date(prev_task.end_date, day_count)
+                        tsk.end_date = get_end_date(tsk.start_date, tsk.bus_days, day_count)
+                        tsk.palt_actual = get_palt_actual(tsk.start_date, tsk.end_date)
 
                     # If this is the first task within parent subtasks
                     if((tsk.order_id - 1) == p_task.order_id):

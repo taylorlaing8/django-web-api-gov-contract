@@ -11,6 +11,8 @@ class Contract(models.Model):
     status      = models.CharField(max_length=2, choices=Status.choices, default=Status.INCOMPLETE)
     value       = models.FloatField()               # In millions of dollars (i.e. 455.53 = $455.53M)
     ss_leads    = models.ManyToManyField('PointOfContact', related_name="ss_leads")
+    start_date  = models.DateField(null=True)
+    # end_date    = models.DateField(null=True)
     need_date   = models.DateField(null=True)
     award_date  = models.DateField(null=True)
     pco         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="pco")             # POC field

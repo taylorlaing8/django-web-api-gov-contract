@@ -54,6 +54,7 @@ urlpatterns = [
 
                             path("", ContractList.as_view()),
                             path("<int:pk>/", ContractDetail.as_view()),
+                            path("<int:pk>/tasks/", ContractTasks.as_view()),
                         ]
                     ),
                 ),
