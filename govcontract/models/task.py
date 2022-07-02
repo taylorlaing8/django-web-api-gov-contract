@@ -14,7 +14,7 @@ class Task(models.Model):
     sub_gate    = models.IntegerField(null=True)
     palt_plan   = models.FloatField()
     palt_actual = models.IntegerField()
-    bus_days    = models.FloatField(null=True)
+    bus_days    = models.FloatField(default=0)
     start_date  = models.DateField()
     end_date    = models.DateField()
     ssp_date    = models.DateField(null=True)
