@@ -46,12 +46,6 @@ urlpatterns = [
                     "contracts/",
                     include(
                         [
-                            # # path("create/", ContractDetail.as_view()),
-                            # path("", ContractListCreate.as_view()),
-                            # path("<int:pk>/", ContractDetail.as_view()),
-                            # path("<int:pk>/update/", ContractUpdate.as_view()),
-                            # path("<int:pk>/delete/", ContractDelete.as_view()),
-
                             path("", ContractList.as_view()),
                             path("<int:pk>/", ContractDetail.as_view()),
                             path("<int:pk>/tasks/", ContractTasks.as_view()),
@@ -62,16 +56,23 @@ urlpatterns = [
                     "tasks/",
                     include(
                         [
-                            # path("create/", TaskCreate.as_view()),
-                            # path("", TaskList.as_view()),
-                            # path("<int:pk>/", TaskDetail.as_view()),
-                            # path("<int:pk>/update/", TaskUpdate.as_view()),
-                            # path("<int:pk>/delete/", TaskDelete.as_view()),
                             path("", TaskList.as_view()),
                             path("<int:pk>/", TaskDetail.as_view()),
                         ]
                     ),
-                )
+                ),
+                path(
+                    "templates/",
+                    include(
+                        [
+                            path("create/", TemplateCreate.as_view()),
+                            path("", TemplateList.as_view()),
+                            path("<int:pk>/", TemplateDetail.as_view()),
+                            path("<int:pk>/update/", TemplateUpdate.as_view()),
+                            path("<int:pk>/delete/", TemplateDelete.as_view()),
+                        ]
+                    ),
+                ),
             ]
         ),
     )

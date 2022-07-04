@@ -27,6 +27,7 @@ class ContractList(APIView):
             if (len(tasks) > 0):
                 prev_task = None
                 day_count = 0
+                order_id = 1
                 subtasks = None
                 subtask_array = []
 
@@ -89,6 +90,10 @@ class ContractList(APIView):
 
                     prev_task = task
 
+                    # ADD ORDER ID TO TASKS
+                    task['order_id'] = order_id
+                    order_id += 1
+
                     tskSerializer = TaskSerializer(data=task)
 
                     if tskSerializer.is_valid(raise_exception=True):
@@ -98,6 +103,9 @@ class ContractList(APIView):
                             for subtask in subtask_array:
                                 subtask['task_id'] = tskSerializer.data['id']
                                 subtask['contract_id'] = contract_serializer.data['id']
+
+                                subtask['order_id'] = order_id
+                                order_id += 1
 
                                 subtskSerializer = TaskSerializer(data=subtask)
 
