@@ -33,5 +33,5 @@ class PointOfContactDelete(generics.RetrieveDestroyAPIView):
 
 class PointOfContactList(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    queryset = PointOfContact.objects.all().order_by('first_name')
+    queryset = PointOfContact.objects.all().order_by('title__title', 'prefix', 'first_name')
     serializer_class = PointOfContactSerializer

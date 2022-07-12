@@ -70,14 +70,27 @@ class TaskDetail(APIView):
             request.data['status_updated'] = datetime.now()
 
             if (parent_task != None):
-                parent_task.status = Status.INCOMPLETE
+                parent_task.status = request.data['status']
                 tasks = Task.objects.filter(task_id=parent_task.id).order_by('order_id')
                 for tsk in tasks:
                     if (tsk.id == task.id): tsk.status = request.data['status']
-                    if (tsk.status != parent_task.status and parent_task.status != Status.INPROGRESS):
-                        parent_task.status = tsk.status
+                    if (parent_task.status != tsk.status and tsk.status != Status.COMPLETE):
+                        if (parent_task.status != Status.INPROGRESS): 
+                            parent_task.status = tsk.status
 
                 parent_task.save()
+
+            contract.status = Status.COMPLETE
+            tasks = Task.objects.filter(contract_id=contract.id).order_by('order_id')
+            for tsk in tasks:
+                if(tsk.id == task.id):
+                    if(request.data['status'] != contract.status and contract.status != Status.INPROGRESS):
+                        contract.status = request.data['status']
+                else:
+                    if(tsk.status != contract.status and contract.status != Status.INPROGRESS):
+                        contract.status = tsk.status
+
+            contract.save()
 
         # If business days changed, start looping through tasks to update start/end dates
         if(request.data['bus_days'] != task.bus_days):
@@ -122,7 +135,7 @@ class TaskDetail(APIView):
                 # ADD CALCULATIONS TO AGGREGATE PARENT TOTALS IN THIS IF BLOCK
                 if(p_task is not None):
                     # Calculations
-                    if(tsk.id != task.id):
+                    if(tsk.order_id >= task.order_id and tsk.id != task.id):
                         tsk.start_date = get_start_date(prev_task.end_date, day_count)
                         tsk.end_date = get_end_date(tsk.start_date, tsk.bus_days, day_count)
                         tsk.palt_actual = get_palt_actual(tsk.start_date, tsk.end_date)

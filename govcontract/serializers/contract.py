@@ -67,7 +67,7 @@ class ContractListSerializer(serializers.ModelSerializer):
         model = Contract
         fields = ('id', 'title', 'sub_title', 'slug', 'type', 'ucid', 'status', 'value', 'need_date', 'award_date', 'cycle_code', 'start_date')
 
-class ContractTasksSerializer(serializers.ModelSerializer):
+class ContractOverviewSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     sub_title = serializers.CharField(max_length=255, allow_null=True)
     slug = serializers.CharField(max_length=255)
@@ -83,7 +83,7 @@ class ContractTasksSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         self.fields['pocs'] = PointOfContactSerializer(many=True, read_only=True)
 
-        return super(ContractTasksSerializer, self).to_representation(instance)
+        return super(ContractOverviewSerializer, self).to_representation(instance)
 
     def get_tasks(self, instance):
         tasks = Task.objects.filter(contract_id=instance.id, task_id=None).order_by('order_id')

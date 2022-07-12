@@ -1,6 +1,6 @@
 from govcontract.services.taskServices import format_date, get_end_date, get_palt_actual, get_start_date
 from ..models import Contract, Status
-from ..serializers import ContractSerializer, ContractListSerializer, ContractTasksSerializer, TaskSerializer
+from ..serializers import ContractSerializer, ContractListSerializer, ContractOverviewSerializer, TaskSerializer
 from rest_framework.permissions import IsAuthenticated
 
 from django.http import Http404
@@ -12,7 +12,7 @@ class ContractList(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        contracts = Contract.objects.all()
+        contracts = Contract.objects.all().order_by('id')
         serializer = ContractListSerializer(contracts, many=True)
         return Response(serializer.data)
 
@@ -145,7 +145,7 @@ class ContractDetail(APIView):
         contract.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class ContractTasks(APIView):
+class ContractOverview(APIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
@@ -156,6 +156,6 @@ class ContractTasks(APIView):
 
     def get(self, request, pk, format=None):
         contract = self.get_object(pk)
-        serializer = ContractTasksSerializer(contract)
+        serializer = ContractOverviewSerializer(contract)
         return Response(serializer.data)
 
