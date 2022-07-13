@@ -1,12 +1,8 @@
-from django.shortcuts import render
 from django.db.models import Sum
-from django.forms.models import model_to_dict
 
-from rest_framework import generics
-
-from govcontract.services.taskServices import get_palt_actual, get_end_date, get_prev_task, get_start_date, save_parent
-from ..models import Task, Contract, Status
-from ..serializers import TaskSerializer, TaskSingleSerializer, ContractSerializer, ContractListSerializer
+from govcontract.services.taskServices import get_palt_actual, get_end_date, get_start_date
+from ..models import Task, Status
+from ..serializers import TaskSerializer
 from rest_framework.permissions import IsAuthenticated
 
 from django.http import Http404
@@ -14,17 +10,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
-
-# class TaskCreate(generics.CreateAPIView):
-#     permission_classes = (IsAuthenticated,)
-#     queryset = (Task.objects.all(),)
-#     serializer_class = TaskSerializer
-
-
-# class TaskList(generics.ListAPIView):
-#     permission_classes = (IsAuthenticated,)
-#     queryset = Task.objects.all().order_by('contract_id', 'order_id')
-#     serializer_class = TaskSerializer
 
 class TaskList(APIView):
     permission_classes = [IsAuthenticated]
@@ -57,7 +42,7 @@ class TaskDetail(APIView):
 
     def get(self, request, pk, format=None):
         task = self.get_object(pk)
-        serializer = TaskSingleSerializer(task)
+        serializer = TaskSerializer(task)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):

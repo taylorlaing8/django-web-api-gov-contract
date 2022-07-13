@@ -20,6 +20,7 @@ class Task(models.Model):
     ssp_date    = models.DateField(null=True)
     poc         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="poc", null=True)
     comments    = models.CharField(max_length=500, null=True)
+    links       = models.JSONField(null=True)
     created     = models.DateTimeField(auto_now_add=True)
     status_updated     = models.DateTimeField(null=True)
 
