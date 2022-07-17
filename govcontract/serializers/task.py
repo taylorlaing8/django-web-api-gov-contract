@@ -52,7 +52,7 @@ class TaskListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('id', 'title', 'sub_title', 'slug', 'status', 'task_id', 'contract_id', 'order_id', 'comments', 'links', 'tasks')
+        fields = ('id', 'title', 'sub_title', 'slug', 'status', 'task_id', 'contract_id', 'order_id', 'comments', 'links', 'tasks', 'status_updated')
 
     def get_tasks(self, instance):
         tasks = Task.objects.filter(task_id=instance.id).order_by('order_id')

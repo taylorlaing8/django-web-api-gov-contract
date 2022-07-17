@@ -15,6 +15,9 @@ class Contract(models.Model):
     # end_date    = models.DateField(null=True)
     need_date   = models.DateField(null=True)
     award_date  = models.DateField(null=True)
+    ssa         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="ssa")             # POC field
+    caa         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="caa")             # POC field
+    sdo         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="sdo")             # POC field
     pco         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="pco")             # POC field
     buyer       = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="buyer")           # POC field
     admin_pco   = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="admin_pco")       # POC field

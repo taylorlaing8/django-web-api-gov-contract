@@ -2,7 +2,7 @@ from numpy import source
 from rest_framework import serializers
 from ..models import Contract, Task
 from .poc import PointOfContactSerializer
-from .task import TaskListSerializer
+from .task import TaskListSerializer, TaskSerializer
 
 class ContractSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
@@ -28,13 +28,16 @@ class ContractSerializer(serializers.ModelSerializer):
     g_fr_fr_p = serializers.IntegerField()
     g_fr_fv_p = serializers.IntegerField()
     pocs = serializers.ListField(child = serializers.IntegerField(), write_only=True)
-    # tasks = serializers.SerializerMethodField()
+    tasks = serializers.SerializerMethodField()
 
     class Meta:
         model = Contract
         fields = ('__all__')
 
     def to_representation(self, instance):
+        self.fields['ssa'] =  PointOfContactSerializer(read_only=True)
+        self.fields['caa'] =  PointOfContactSerializer(read_only=True)
+        self.fields['sdo'] =  PointOfContactSerializer(read_only=True)
         self.fields['pco'] =  PointOfContactSerializer(read_only=True)
         self.fields['buyer'] =  PointOfContactSerializer(read_only=True)
         self.fields['admin_pco'] =  PointOfContactSerializer(read_only=True)
@@ -45,10 +48,10 @@ class ContractSerializer(serializers.ModelSerializer):
 
         return super(ContractSerializer, self).to_representation(instance)
     
-    # def get_tasks(self, instance):
-    #     tasks = Task.objects.filter(contract_id=instance.id, task_id=None).order_by('order_id')
-    #     serializer = TaskListSerializer(tasks, many=True)
-    #     return serializer.data
+    def get_tasks(self, instance):
+        tasks = Task.objects.filter(contract_id=instance.id, task_id=None).order_by('order_id')
+        serializer = TaskSerializer(tasks, many=True)
+        return serializer.data
 
 class ContractListSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)

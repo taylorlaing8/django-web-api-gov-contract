@@ -22,7 +22,7 @@ class Task(models.Model):
     comments    = models.CharField(max_length=500, null=True)
     links       = models.JSONField(null=True)
     created     = models.DateTimeField(auto_now_add=True)
-    status_updated     = models.DateTimeField(null=True)
+    status_updated     = models.DateTimeField()
 
     def get_all_tasks(self):
         return Task.objects.filter(task_id=self.id).order_by('order_id')
