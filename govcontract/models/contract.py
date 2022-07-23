@@ -12,9 +12,9 @@ class Contract(models.Model):
     value       = models.FloatField()               # In millions of dollars (i.e. 455.53 = $455.53M)
     ss_leads    = models.ManyToManyField('PointOfContact', related_name="ss_leads")
     start_date  = models.DateField(null=True)
-    # end_date    = models.DateField(null=True)
     need_date   = models.DateField(null=True)
     award_date  = models.DateField(null=True)
+    pop_date    = models.DateField(null=True)   # When current contract ends
     ssa         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="ssa")             # POC field
     caa         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="caa")             # POC field
     sdo         = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="sdo")             # POC field
@@ -23,7 +23,6 @@ class Contract(models.Model):
     admin_pco   = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="admin_pco")       # POC field
     admin_buyer = models.ForeignKey("PointOfContact", on_delete=models.CASCADE, related_name="admin_buyer")     # POC field
     cycle_code  = models.CharField(max_length=55)
-    pop_date    = models.DateField(null=True)   # When current contract ends
     g_o_p       = models.IntegerField()
     g_t_p       = models.IntegerField()
     g_tr_p      = models.IntegerField()

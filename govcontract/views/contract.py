@@ -7,6 +7,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from datetime import datetime
 
 class ContractList(APIView):
     permission_classes = [IsAuthenticated]
@@ -34,6 +35,7 @@ class ContractList(APIView):
                 for task in tasks:
                     task['task_id'] = None
                     task['contract_id'] = contract_serializer.data['id']
+                    task['status_updated'] = datetime.now()
 
                     if ('tasks' in task):
                         subtasks = task.pop('tasks')
@@ -53,6 +55,7 @@ class ContractList(APIView):
 
                         for subtask in subtasks:
                             subtask['contract_id'] = contract_serializer.data['id']
+                            subtask['status_updated'] = datetime.now()
 
                             if(subtask['status'] != task['status'] and task['status'] != Status.INPROGRESS):
                                 task['status'] = subtask['status']
@@ -102,7 +105,6 @@ class ContractList(APIView):
                         if (len(subtask_array) > 0):
                             for subtask in subtask_array:
                                 subtask['task_id'] = tskSerializer.data['id']
-                                subtask['contract_id'] = contract_serializer.data['id']
 
                                 subtask['order_id'] = order_id
                                 order_id += 1
