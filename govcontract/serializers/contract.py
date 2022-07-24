@@ -5,13 +5,13 @@ from .poc import PointOfContactSerializer
 from .task import TaskListSerializer, TaskSerializer
 
 class ContractSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=255)
-    sub_title = serializers.CharField(max_length=255, allow_null=True)
-    slug = serializers.CharField(max_length=255)
-    type = serializers.CharField(max_length=55)
-    ucid = serializers.CharField(max_length=55)     # Unique Contract ID
+    title = serializers.CharField(max_length=256)
+    sub_title = serializers.CharField(max_length=256, allow_null=True)
+    slug = serializers.CharField(max_length=256)
+    type = serializers.CharField(max_length=64)
+    ucid = serializers.CharField(max_length=64)     # Unique Contract ID
     status = serializers.CharField(max_length=2)
-    value = serializers.FloatField()    # In millions of dollars (i.e. 455.53 = $455.53M)
+    value = serializers.FloatField()    # In millions of dollars (i.e. 464.53 = $464.53M)
     ss_leads = serializers.ListField(child = serializers.IntegerField(), write_only=True)
     start_date = serializers.DateField(allow_null=True)
     # end_date = serializers.DateField(allow_null=True)
@@ -28,6 +28,7 @@ class ContractSerializer(serializers.ModelSerializer):
     g_fr_fr_p = serializers.IntegerField()
     g_fr_fv_p = serializers.IntegerField()
     pocs = serializers.ListField(child = serializers.IntegerField(), write_only=True)
+    comments = serializers.CharField(max_length=1024, allow_null=True)
     tasks = serializers.SerializerMethodField()
 
     class Meta:
@@ -54,34 +55,36 @@ class ContractSerializer(serializers.ModelSerializer):
         return serializer.data
 
 class ContractListSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=255)
-    sub_title = serializers.CharField(max_length=255, allow_null=True)
-    slug = serializers.CharField(max_length=255)
-    type = serializers.CharField(max_length=55)
-    ucid = serializers.CharField(max_length=55)     # Unique Contract ID
+    title = serializers.CharField(max_length=256)
+    sub_title = serializers.CharField(max_length=256, allow_null=True)
+    slug = serializers.CharField(max_length=256)
+    type = serializers.CharField(max_length=64)
+    ucid = serializers.CharField(max_length=64)     # Unique Contract ID
     status = serializers.CharField(max_length=2)
-    value = serializers.FloatField()    # In millions of dollars (i.e. 455.53 = $455.53M)
+    value = serializers.FloatField()    # In millions of dollars (i.e. 464.53 = $464.53M)
     start_date = serializers.DateField(allow_null=True)
     need_date = serializers.DateField()
     award_date = serializers.DateField()
-    cycle_code = serializers.CharField(max_length=15)
+    cycle_code = serializers.CharField(max_length=16)
+    comments = serializers.CharField(max_length=1024, allow_null=True)
 
     class Meta:
         model = Contract
-        fields = ('id', 'title', 'sub_title', 'slug', 'type', 'ucid', 'status', 'value', 'need_date', 'award_date', 'cycle_code', 'start_date')
+        fields = ('id', 'title', 'sub_title', 'slug', 'type', 'ucid', 'status', 'value', 'need_date', 'award_date', 'cycle_code', 'start_date', 'comments')
 
 class ContractOverviewSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=255)
-    sub_title = serializers.CharField(max_length=255, allow_null=True)
-    slug = serializers.CharField(max_length=255)
-    ucid = serializers.CharField(max_length=55)     # Unique Contract ID
+    title = serializers.CharField(max_length=256)
+    sub_title = serializers.CharField(max_length=256, allow_null=True)
+    slug = serializers.CharField(max_length=256)
+    ucid = serializers.CharField(max_length=64)     # Unique Contract ID
     status = serializers.CharField(max_length=2)
     tasks = serializers.SerializerMethodField()
     pocs = serializers.ListField(child = serializers.IntegerField(), write_only=True)
+    comments = serializers.CharField(max_length=1024, allow_null=True)
 
     class Meta:
         model = Contract
-        fields = ('id', 'title', 'sub_title', 'slug', 'ucid', 'status', 'tasks', 'pocs')
+        fields = ('id', 'title', 'sub_title', 'slug', 'ucid', 'status', 'tasks', 'pocs', 'comments')
 
     def to_representation(self, instance):
         self.fields['pocs'] = PointOfContactSerializer(many=True, read_only=True)

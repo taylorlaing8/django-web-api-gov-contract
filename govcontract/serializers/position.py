@@ -3,8 +3,8 @@ from rest_framework import serializers
 from ..models import Position
 
 class PositionSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=255)
-    department = serializers.CharField(max_length=255)
+    title = serializers.CharField(max_length=256)
+    department = serializers.CharField(max_length=256)
 
     class Meta:
         model = Position

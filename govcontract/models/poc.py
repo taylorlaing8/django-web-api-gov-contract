@@ -2,10 +2,10 @@ from django.db import models
 
 class PointOfContact(models.Model):
     id          = models.AutoField(primary_key=True)
-    first_name  = models.CharField(max_length=55)
-    last_name   = models.CharField(max_length=55)
+    first_name  = models.CharField(max_length=64)
+    last_name   = models.CharField(max_length=64)
     email       = models.EmailField()
-    prefix      = models.CharField(max_length=10, null=True)
+    prefix      = models.CharField(max_length=16, null=True)
     title       = models.ForeignKey("Position", on_delete=models.CASCADE)
     created     = models.DateTimeField(auto_now_add=True)
 

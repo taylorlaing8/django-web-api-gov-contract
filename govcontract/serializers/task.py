@@ -4,9 +4,9 @@ from ..models import Contract, Task
 from .poc import PointOfContactSerializer
 
 class TaskSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=255)
-    sub_title = serializers.CharField(max_length=255, allow_null=True)
-    slug = serializers.CharField(max_length=255)
+    title = serializers.CharField(max_length=264)
+    sub_title = serializers.CharField(max_length=264, allow_null=True)
+    slug = serializers.CharField(max_length=264)
     status = serializers.CharField(max_length=2)
     task_id = serializers.PrimaryKeyRelatedField(queryset=Task.objects.all(), many=False, allow_null=True)
     contract_id = serializers.PrimaryKeyRelatedField(queryset=Contract.objects.all(), many=False)
@@ -19,7 +19,7 @@ class TaskSerializer(serializers.ModelSerializer):
     start_date = serializers.DateField()
     end_date = serializers.DateField()
     ssp_date = serializers.DateField(allow_null=True)
-    comments = serializers.CharField(max_length=500, allow_null=True)
+    comments = serializers.CharField(max_length=1024, allow_null=True)
     links = serializers.JSONField(allow_null=True)
     tasks = serializers.SerializerMethodField()
 
@@ -39,14 +39,14 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class TaskListSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=255)
-    sub_title = serializers.CharField(max_length=255, allow_null=True)
-    slug = serializers.CharField(max_length=255)
+    title = serializers.CharField(max_length=264)
+    sub_title = serializers.CharField(max_length=264, allow_null=True)
+    slug = serializers.CharField(max_length=264)
     status = serializers.CharField(max_length=2)
     task_id = serializers.PrimaryKeyRelatedField(queryset=Task.objects.all(), many=False, allow_null=True)
     contract_id = serializers.PrimaryKeyRelatedField(queryset=Contract.objects.all(), many=False)
     order_id = serializers.IntegerField()
-    comments = serializers.CharField(max_length=500, allow_null=True)
+    comments = serializers.CharField(max_length=1024, allow_null=True)
     links = serializers.JSONField(allow_null=True)
     tasks = serializers.SerializerMethodField()
 
