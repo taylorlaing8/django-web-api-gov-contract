@@ -33,5 +33,5 @@ class TemplateDelete(generics.RetrieveDestroyAPIView):
 
 class TemplateList(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    queryset = Template.objects.all()
+    queryset = Template.objects.all().order_by('title')
     serializer_class = TemplateSerializer
