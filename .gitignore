@@ -2,7 +2,11 @@
 /bin
 /lib
 pvenv
+.DS_Store
 # Elastic Beanstalk Files
+.elasticbeanstalk
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+.ebextensions
+.elasticbeanstalk
